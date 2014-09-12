@@ -11,7 +11,7 @@
 namespace Itslove\Passport\Api;
 
 use Phalcon\Mvc\Controller,
-	Itslove\Passport\Models\Usermeta;
+	Itslove\Passport\Models\UserMeta;
 
 /**
  * 用户元数据过滤控制器类
@@ -90,7 +90,7 @@ class UserMetaFilterController extends Controller {
 	 */
 	public function filterUnique($metaKey, $metaValue)
 	{
-		$meta = Usermeta::findFirst(array(
+		$meta = UserMeta::findFirst(array(
 			'conditions' => 'meta_key = ?0 and meta_value = ?1',
 			'bind' => array($metaKey, $metaValue)
 		));

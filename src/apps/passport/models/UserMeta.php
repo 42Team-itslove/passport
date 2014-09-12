@@ -17,9 +17,9 @@ use Itslove\Passport\Core\ModelProvider;
  *
  * @package Itslove\Passport\Models
  */
-class Usermeta extends ModelProvider {
+class UserMeta extends ModelProvider {
 
-	protected static $cacheChildNamespace = 'Model::Usermeta';
+	protected static $cacheChildNamespace = 'Model::UserMeta';
 	protected static $primaryKey = 'meta_id';
 
 	public $meta_id;

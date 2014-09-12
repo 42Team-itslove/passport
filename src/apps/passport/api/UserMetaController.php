@@ -10,7 +10,7 @@
 
 namespace Itslove\Passport\Api;
 
-use Itslove\Passport\Models\Usermeta;
+use Itslove\Passport\Models\UserMeta;
 
 /**
  * 用户元数据资源控制器类
@@ -74,10 +74,10 @@ class UserMetaController extends BaseController {
 	 */
 	public function putUserMetaAction($uid, $metaKey, $metaValue)
 	{
-		$meta = Usermeta::findRow($uid, $metaKey);
+		$meta = UserMeta::findRow($uid, $metaKey);
 
 		if ( ! $meta) {
-			$meta = new Usermeta();
+			$meta = new UserMeta();
 			$meta->UID = $uid;
 			$meta->meta_key = $metaKey;
 		}
@@ -104,7 +104,7 @@ class UserMetaController extends BaseController {
 	 */
 	public function deleteUserMetaAction($uid, $metaKey)
 	{
-		$meta = Usermeta::findRow($uid, $metaKey);
+		$meta = UserMeta::findRow($uid, $metaKey);
 
 		if ( ! $meta) {
 			throw new ResourceException('Not Found', 404);
@@ -120,16 +120,17 @@ class UserMetaController extends BaseController {
 	/**
 	 * 删除所有用户元数据
 	 *
-	 * @param $uid  用户ID
+	 * @param integer $uid  用户ID
 	 * @throws ResourceException
 	 */
 	public function deleteUserMetaAll($uid)
 	{
-		$metaGroup = Usermeta::find(array(
+		$metaGroup = UserMeta::find(array(
 			'conditions' => 'UID = ?0',
 			'bind' => array($uid)
 		));
 
+		/** @var UserMeta $meta */
 		foreach ($metaGroup as &$meta) {
 			if ( ! $meta->delete()) {
 				throw new ResourceException('Internal Server Error', 500);
@@ -146,7 +147,7 @@ class UserMetaController extends BaseController {
 	 */
 	public function getMetaValueExists($metaKey, $metaValue)
 	{
-		$meta = Usermeta::findFirst(array(
+		$meta = UserMeta::findFirst(array(
 			'conditions' => 'meta_key = ?0 and meta_value = ?1',
 			'bind' => array($metaKey, $metaValue)
 		));
