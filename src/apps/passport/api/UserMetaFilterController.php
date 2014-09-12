@@ -45,24 +45,17 @@ class UserMetaFilterController extends Controller {
 	protected $metaKey;
 
 	/**
-	 * 用户元数据值
-	 *
-	 * @var string
-	 */
-	protected $metaValue;
-
-	/**
 	 * 注册过滤器
 	 *
 	 * 该方法会在类构造函数后自动调用
 	 */
 	public function onConstruct()
 	{
-		$this->fields['nickname'] = function() {
-			if ($this->filterUnique('nickname', $this->metaValue)) {
+		$this->fields['nickname'] = function(&$metaValue) {
+			if ($this->filterUnique('nickname', $metaValue)) {
 				throw new ResourceException('Conflict', 409);
 			}
-			$this->validation->validate('nickname', $this->metaValue);
+			$this->validation->validate('nickname', $metaValue);
 		};
 	}
 
@@ -80,12 +73,11 @@ class UserMetaFilterController extends Controller {
 			throw new ResourceException('Conflict', 409);
 		}
 
-		$this->$uid = $uid;
-		$this->$metaKey = $metaKey;
-		$this->$metaValue = $metaValue;
+		$this->uid = $uid;
+		$this->metaKey = $metaKey;
 
 		if (isset($this->fields[$metaKey])) {
-			$this->fields[$metaKey]();
+			$this->fields[$metaKey]($metaValue);
 		}
 	}
 
