@@ -86,7 +86,7 @@ return array(
 	 */
 	'env' => array(
 
-		'base_uri' => 'http://172.23.184.187/passport/src/public/passport/',
+		'base_uri' => '/',
 
 		'testing'  => true
 
