@@ -72,7 +72,7 @@ class Validation {
 	public function validate($name, &$value, $useFilter = true)
 	{
 		if ($useFilter && isset($this->filters[$name])) {
-			$value = $this->filters[$name]($value);
+			$this->filters[$name]($value);
 		}
 
 		if ( ! $this->validators[$name]($value)) {

@@ -15,6 +15,8 @@ use Itslove\Passport\Core\ModelProvider;
 /**
  * 用户表模型
  *
+ * 注册用户ID从1001起始, 1000以内为保留ID
+ *
  * @package Itslove\Passport\Models
  */
 class Users extends ModelProvider {
