@@ -10,9 +10,11 @@
 
 use Phalcon\Http\Response,
 	Itslove\Passport\Api\BaseController,
+	Itslove\Passport\Api\MessageController,
 	Itslove\Passport\Api\SsoController,
 	Itslove\Passport\Api\UserController,
-	Itslove\Passport\Api\UsermetaController,
+	Itslove\Passport\Api\UserMessageController,
+	Itslove\Passport\Api\UserMetaController,
 	Itslove\Passport\Api\UploadController;
 
 /**
@@ -169,4 +171,63 @@ $app->delete('/api/upload/user/portrait/{uid:[0-9]+}', function($uid) {
 $app->get('/api/upload/user/portrait/address/{uid:[0-9]+}', function($uid) {
 	BaseController::auth();
 	BaseController::run(new UploadController(), 'getUserPortraitAddressAction', array($uid));
+});
+
+/**
+ * Message Status API
+ */
+$app->get('/api/user/message/new/{uid:[0-9]+}', function($uid) {
+	BaseController::auth();
+	BaseController::run(new UserMessageController(), 'getUserUnreadMessageListAction', array($uid));
+});
+
+$app->get('/api/user/message/read/{uid:[0-9]+}', function($uid) {
+	BaseController::auth();
+	BaseController::run(new UserMessageController(), 'getUserReadMessageListAction', array($uid));
+});
+
+$app->get('/api/user/message/all/{uid:[0-9]+}', function($uid) {
+	BaseController::auth();
+	BaseController::run(new UserMessageController(), 'getUserAllMessageListAction', array($uid));
+});
+
+$app->put('/api/user/message/status/{uid:[0-9]+}/{msg_id:[0-9]+}', function($uid, $msg_id) {
+	BaseController::auth();
+	$request = new \Phalcon\Http\Request();
+	$status = $request->getPut('status');
+	BaseController::run(new UserMessageController(), 'putUserMessageStatusAction', array($uid, $msg_id, $status));
+});
+
+/**
+ * Message Content API
+ */
+$app->get('/api/message/{msg_id:[0-9]+}', function($msg_id) {
+	BaseController::auth();
+	BaseController::run(new MessageController(), 'getMessageAction', array($msg_id));
+});
+
+$app->post('/api/message', function() {
+	BaseController::auth();
+	$request = new \Phalcon\Http\Request();
+	$send_uid = $request->getPost('send_uid');
+	$content = $request->getPost('content');
+	$msg_options = $request->getPost('msg_options') or $msg_options = '';
+	$post_type = $request->getPost('post_type');
+	$uid_or_gid = $request->getPost('uid_or_gid') or $uid_or_gid = $request->getPost('rec_uid') or $uid_or_gid = $request->getPost('gid');
+	$post_time = $request->getPost('post_time') or $post_time = date('Y-m-d H:i:s');
+	$expiry = $request->getPost('expiry') or $expiry = 30;
+	$expiry_at_end = $request->getPost('expiry_at_end') or $expiry_at_end = date('Y-m-d H:i:s', time() + $expiry*24*3600);
+	BaseController::run(new MessageController(), 'postMessageAction', array($send_uid, $content, $msg_options, $uid_or_gid, $post_type, $post_time, $expiry, $expiry_at_end));
+});
+
+$app->put('/api/message/{msg_id:[0-9]+}', function($msg_id) {
+	BaseController::auth();
+	$request = new \Phalcon\Http\Request();
+	$update_data = $request->getPut();
+	BaseController::run(new MessageController(), 'putMessageAction', array($msg_id, $update_data));
+});
+
+$app->delete('/api/message/{msg_id:[0-9]+}', function($msg_id) {
+	BaseController::auth();
+	BaseController::run(new MessageController(), 'deleteMessageAction', array($msg_id));
 });
