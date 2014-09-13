@@ -140,6 +140,9 @@ class MainController extends BaseController {
 			$this->responseJson(200, '登陆成功')->send();
 		} catch (ResourceException $e) {
 			switch ($e->getCode()) {
+				case 403:
+					$this->responseJson($e->getCode(), '账号被冻结')->send();
+					break;
 				case 404:
 					$this->responseJson($e->getCode(), '用户不存在')->send();
 					break;

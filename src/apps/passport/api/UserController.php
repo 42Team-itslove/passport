@@ -16,6 +16,7 @@ use Itslove\Passport\Helper\Hash,
 /**
  * 用户资源控制器
  *
+ * @property \Itslove\Passport\Helper\Validation validation
  * @package Itslove\Passport\Api
  */
 class UserController extends BaseController {
@@ -53,7 +54,7 @@ class UserController extends BaseController {
 	public function postUserAction($username, $password, $hashMethod, $active, $regDate, $regIp)
 	{
 		$user = Users::findFirst(array(
-			'conditions' => 'username = ?0',
+			'username = ?0',
 			'bind' => array($username)
 		));
 
@@ -138,7 +139,7 @@ class UserController extends BaseController {
 	public function getAuthAction($username, $password)
 	{
 		$user = Users::findFirst(array(
-			'conditions' => 'username = ?0',
+			'username = ?0',
 			'bind' => array($username)
 		));
 
@@ -154,7 +155,7 @@ class UserController extends BaseController {
 	}
 
 	/**
-	 * 更新用户密码
+	 * 验证用户并更新用户登陆记录
 	 *
 	 * @param string $username       用户名
 	 * @param string $password       密码
@@ -181,7 +182,7 @@ class UserController extends BaseController {
  		$user->last_login_ip = $lastLoginIp;
 
  		if ($user->save()) {
- 			$this->response(200, 'OK', array('UID' => $user->UID));
+ 			$this->response(200, 'OK', $user);
  		} else {
 			throw new ResourceException('Internal Server Error', 500);
  		}

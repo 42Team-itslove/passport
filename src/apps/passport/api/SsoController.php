@@ -38,6 +38,10 @@ class SsoController extends BaseController {
 		$user = new UserController();
 		$user->putAuthAction($username, $password, $lastLoginDate, $lastLoginIp);
 
+		if (0 == $user->resource->active) {
+			throw new ResourceException('Forbidden', 403);
+		}
+
 		if ($ticket == '') {
 			$ticket = Hash::unique_string();
 		}

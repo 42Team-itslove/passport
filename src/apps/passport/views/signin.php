@@ -18,7 +18,7 @@
         <input id="auto_sigin" type="checkbox" name="auto_signin">
         <label for="auto_sigin">下次自动登录</label>
       </div>
-      <div id="forg"><a href="##">找回密码？</a></div>
+      <div id="forg"><a href="#">找回密码？</a></div>
       <div class="f-bt">
         <input type="submit" value="登 录">
       </div>
@@ -85,7 +85,10 @@
 			}
 
 			$('#password').val(password_value);
-			if (json.statusCode == 404) {
+			if (json.statusCode == 403) {
+				$('#error-msg').html("登录失败，账号被冻结");
+				$('#error-msg').show();
+			} else if (json.statusCode == 404) {
 				$('#username').focus();
 				$('#error-msg').html("登录失败，用户不存在");
 				$('#error-msg').show();
