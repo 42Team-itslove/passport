@@ -38,17 +38,12 @@ class Users extends ModelProvider {
 
 	public function beforeValidationOnCreate()
 	{
-		$this->created_at = date('Y-m-d H:i:m');
-	}
-
-	public function beforeCreate()
-	{
-		$this->created_at = date('Y-m-d H:i:m');
+		$this->created_at = date('Y-m-d H:i:s');
 	}
 
 	public function beforeUpdate()
 	{
-		$this->updated_at = date('Y-m-d H:i:m');
+		$this->updated_at = date('Y-m-d H:i:s');
 	}
 
 }
