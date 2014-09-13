@@ -139,9 +139,9 @@ return array(
 
 			),
 
-			'cache_error' => array(
+			'cache_access' => array(
 
-				'file'  => 'cache_error.log',
+				'file'  => 'cache_access.log',
 
 				'level' => 7
 

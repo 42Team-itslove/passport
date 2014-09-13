@@ -20,7 +20,7 @@ use Memcache;
 class CacheProvider {
 
 	/**
-	 * 缓存键名命名空间, 该值为Memcahce键名前缀
+	 * 缓存键名命名空间, 该值为Memcache键名前缀
 	 *
 	 * @var string
 	 */
@@ -105,7 +105,14 @@ class CacheProvider {
 	public function get($childNamespace, $key)
 	{
 		$fullKey = $this->getFullKey($childNamespace, $key);
-		return $this->memcache->get($fullKey);
+
+		if ( false === ($result = $this->memcache->get($fullKey))) {
+			/** @var \Itslove\Passport\Core\LogProvider $log */
+			$log = Provider::get('log');
+			$log['cache_access']->notice("缓存未命中 Memcached {$fullKey}");
+		}
+
+		return $result;
 	}
 
 	/**
