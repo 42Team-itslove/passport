@@ -11,7 +11,7 @@
 namespace Itslove\Passport\Helper;
 
 use Closure,
-	Itslove\Passport\Core\Exception;
+	Exception;
 
 class ValidationException extends Exception {}
 
