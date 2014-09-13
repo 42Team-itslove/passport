@@ -29,17 +29,17 @@ class Online extends ModelProvider {
 
 	public function beforeValidationOnCreate()
 	{
-		$this->created_at = time();
+		$this->created_at = date('Y-m-d H:i:m');
 	}
 
 	public function beforeCreate()
 	{
-		$this->created_at = time();
+		$this->created_at = date('Y-m-d H:i:m');
 	}
 
 	public function beforeUpdate()
 	{
-		$this->updated_at = time();
+		$this->updated_at = date('Y-m-d H:i:m');
 	}
 
 }
