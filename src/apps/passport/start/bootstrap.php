@@ -14,6 +14,7 @@ use Phalcon\Config,
 	Phalcon\Loader,
 	Phalcon\Logger\Adapter\File as Logger,
 	Phalcon\Mvc\Micro,
+	Phalcon\Mvc\Model,
 	Phalcon\Mvc\Url,
 	Phalcon\Session\Adapter\Files as Session,
 	Itslove\Passport\Core\CacheProvider,
@@ -95,8 +96,13 @@ try {
 		if ($provider->config->log->groups->query_access->level != -1) {
 			$eventsManager = new EventsManager();
 			$eventsManager->attach('db', function($event, $connection) use ($provider) {
+				/**
+				 * @var \Itslove\Passport\Core\LogProvider $log
+				 * @var \Phalcon\Db\Adapter\Pdo\Mysql      $connection
+				 * @var \Phalcon\Events\Event              $event
+				 */
 				if ($event->getType() == 'beforeQuery') {
-					$provider->log['query_access']->info($connection->getSQLStatement());
+					$log = $provider->log and $log['query_access']->info(str_replace(array("/r/n", "/r", "/n"), "", $connection->getSQLStatement()));
 				}
 			});
 
@@ -200,12 +206,20 @@ try {
 		error_reporting(0);
 	}
 
+	//关闭Phalcon模型特性, notNullValidations特性会严格审查NotNull
+	Model::setup(array(
+		'columnRenaming' => false,
+		'notNullValidations' => false,
+		'virtualForeignKeys' => false,
+		'phqlLiterals' => false
+	));
+
 	// 载入路由规则
 	require APP_PATH . 'front_routes.php';
 	require APP_PATH . 'api_routes.php';
 
 	// 处理请求
-	$app->handle();
+	defined('TEST_DEBUG') or $app->handle();
 } catch (Exception $e) {
 	echo $e->getMessage();
 }
