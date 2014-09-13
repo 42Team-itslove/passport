@@ -10,6 +10,7 @@
 
 use Phalcon\Config,
 	Phalcon\Db\Adapter\Pdo\Mysql,
+	Phalcon\Events\Manager as EventsManager,
 	Phalcon\Loader,
 	Phalcon\Logger\Adapter\File as Logger,
 	Phalcon\Mvc\Micro,
@@ -81,7 +82,7 @@ try {
 
 	// 数据库
 	Provider::set('db', function($provider) {
-		return new Mysql(
+		$db = new Mysql(
 			array(
 				'host' => $provider->config->database->host,
 				'username' => $provider->config->database->username,
@@ -89,6 +90,21 @@ try {
 				'dbname' => $provider->config->database->dbname,
 			)
 		);
+
+		//记录 SQL 语句
+		if ($provider->config->log->groups->query_access->level != -1) {
+			$eventsManager = new EventsManager();
+			$eventsManager->attach('db', function($event, $connection) use ($provider) {
+				if ($event->getType() == 'beforeQuery') {
+					$provider->log['query_access']->info($connection->getSQLStatement());
+				}
+			});
+
+			//设置事件管理器
+			$db->setEventsManager($eventsManager);
+		}
+
+		return $db;
 	});
 
 	// 日志

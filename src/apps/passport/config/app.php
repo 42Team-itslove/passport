@@ -96,12 +96,12 @@ return array(
 	/**
 	 * 日志配置
 	 *
-	 * api_error/api_access/cache_error/core_error 分别为API错误日志, API访问日志, 缓存错误日志, 应用核心错误日志
+	 * api_error/api_access/cache_error/core_error 分别为API错误日志, API访问日志, 缓存错误日志, 应用核心错误日志, 数据查询日志
 	 *
 	 * enable    是否开启日志系统
 	 * groups => file  为日志文件名
 	 * groups => level 为日志级别 0-9(由高到低)
-	 * 建议测试或开发环境设置为9或7(全开), 生产环境设置为6或5, 关闭日志请设置级别为-1
+	 * 建议测试或开发环境设置为9或7(全开), 生产环境设置为6或5, 单独关闭日志请设置级别为-1
 	 * 后缀标注*号的级别为本工程使用的级别
 	 *
 	 * SPECIAL   = 9
@@ -152,7 +152,17 @@ return array(
 				'file'  => 'core_error.log',
 
 				'level' => 7
+
+			),
+
+			'query_access' => array(
+
+				'file'  => 'query_access.log',
+
+				'level' => 7
+
 			)
+
 		)
 
 	),
