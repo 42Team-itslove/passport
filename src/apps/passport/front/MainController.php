@@ -186,8 +186,8 @@ class MainController extends BaseController {
 			//注册用户
 			$user = new UserController();
 			$user->postUserAction($username, $password, 'sha1_salt_sha1', 1, $regDate, $regIp);
-			$usermeta = new UsermetaController();
-			$usermeta->postUsermetaAction($user->resource->UID, 'nickname', $nickname);
+			$meta = new UserMetaController();
+			$meta->postUserMetaAction($user->resource->UID, 'nickname', $nickname);
 			$this->db->commit();
 			$this->responseJson(200, '注册成功')->send();
 

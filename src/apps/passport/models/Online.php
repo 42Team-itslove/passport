@@ -27,7 +27,8 @@ class Online extends ModelProvider {
 	public $created_at;
 	public $updated_at;
 
-	public function beforeValidationOnCreate(){
+	public function beforeValidationOnCreate()
+	{
 		$this->created_at = time();
 	}
 
