@@ -31,7 +31,7 @@ class Exception extends \Exception {
 	public function __construct($message = '', $code = 0, Exception $previous = null)
 	{
 		/** @var LogProvider $log */
-		$log = Provider::get('log') and $log['core_error']->error("应用核心异常, \"{$message}\" 错误代码 {$code}");
+		$log = Provider::get('log') and $log['core_error']->error("应用核心异常, \"{$message}\" {$code} {$this->file} {$this->line}");
 
 		parent::__construct($message, $code, $previous);
 	}

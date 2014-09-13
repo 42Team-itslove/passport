@@ -64,7 +64,7 @@ class ViewProvider {
 		foreach ($names as $name) {
 			$filename = $this->viewsDir.$name.'.php';
 			if ( ! file_exists($filename)) {
-				throw new Exception("{$filename} view file does not exist");
+				throw new Exception("该视图文件不存在 {$filename}");
 			}
 			$this->views[] = $filename;
 		}

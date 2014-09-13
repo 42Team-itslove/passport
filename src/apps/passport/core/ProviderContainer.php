@@ -46,7 +46,7 @@ class ProviderContainer {
 	{
 		if ( ! isset($this->components[$name])) {
 			if ( ! isset($this->generators[$name])) {
-				throw new Exception("{$name} service provider does not exist");
+				throw new Exception("该服务提供者不存在 {$name}");
 			}
 			$this->components[$name] = call_user_func($this->generators[$name], $this);
 		}

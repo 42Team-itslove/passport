@@ -59,7 +59,7 @@ class LogProvider implements ArrayAccess {
 	{
 		if ( ! isset($this->loggers[$offset])) {
 			if ( ! isset($this->makers[$offset])) {
-				throw new Exception("{$offset} log provider does not exist");
+				throw new Exception("该日志服务驱动不存在 {$offset}");
 			}
 			$this->loggers[$offset] = $this->makers[$offset]();
 		}

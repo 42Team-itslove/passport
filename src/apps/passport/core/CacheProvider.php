@@ -109,7 +109,7 @@ class CacheProvider {
 		if ( false === ($result = $this->memcache->get($fullKey))) {
 			/** @var \Itslove\Passport\Core\LogProvider $log */
 			$log = Provider::get('log');
-			$log['cache_access']->notice("缓存未命中 Memcached {$fullKey}");
+			$log['cache_access']->notice("缓存未命中, Memcached {$fullKey}");
 		}
 
 		return $result;
