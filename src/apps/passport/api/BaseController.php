@@ -13,6 +13,7 @@ namespace Itslove\Passport\Api;
 use RuntimeException,
 	Phalcon\Http\Response,
 	Phalcon\Mvc\Controller,
+	Itslove\Passport\Core\Exception,
 	Itslove\Passport\Core\Provider,
 	Itslove\Passport\Helper\ValidationException;
 
@@ -114,6 +115,12 @@ class BaseController extends Controller {
 			$response->send();
 			$log = $api->log and $log['api_error']->warning("资源请求失败, 客户端 {$_SERVER['REMOTE_ADDR']} 访问资源 {$_SERVER['REQUEST_URI']}: 提供的数据格式未通过校验");
 		} catch (RuntimeException $e) {
+			$response = new Response();
+			$response->setStatusCode(500, 'Internal Server Error');
+			$response->setContent('服务器错误');
+			$response->send();
+			$log = $api->log and $log['api_error']->error("资源请求失败, 客户端 {$_SERVER['REMOTE_ADDR']} 访问资源 {$_SERVER['REQUEST_URI']}: 服务器异常");
+		} catch (Exception $e) {
 			$response = new Response();
 			$response->setStatusCode(500, 'Internal Server Error');
 			$response->setContent('服务器错误');
